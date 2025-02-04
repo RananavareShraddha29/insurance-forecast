@@ -143,12 +143,15 @@ if uploaded_file:
             # Prepare Prophet data
             prophet_df = data.reset_index().rename(columns={'year_month_f': 'ds', 'premiums': 'y'})
             
-            # Split data
+            # Remove any previously trained model
+            if 'model' in st.session_state:
+                del st.session_state['model']
+            
+            # Split data for training and testing
             train_size = int(len(prophet_df) * 0.8)
             train = prophet_df[:train_size]
             test = prophet_df[train_size:]
             
-            # Initialize and train model
             model = Prophet(
                 seasonality_mode=seasonality_mode,
                 changepoint_prior_scale=changepoint_scale,
@@ -159,7 +162,7 @@ if uploaded_file:
             
             model.fit(train)
             
-            # Generate forecasts
+            # Generate future dates for forecasting
             future = model.make_future_dataframe(periods=forecast_periods, freq='MS')
             forecast = model.predict(future)
             
@@ -167,7 +170,6 @@ if uploaded_file:
             st.session_state.model = model
             st.session_state.forecast = forecast
             st.session_state.test = test
-            
             st.success("Model training completed!")
 
     # Display results if model exists
