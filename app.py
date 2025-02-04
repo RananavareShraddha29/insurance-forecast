@@ -42,7 +42,7 @@ with st.sidebar:
     forecast_periods = st.number_input("Forecast Months", 1, 36, 12)
 
 # Data loading and preprocessing
-@st.cache_data
+@st.cache
 def load_and_filter_data(uploaded_file, selected_state):
     if uploaded_file is not None:
         df = pd.read_csv(uploaded_file)
