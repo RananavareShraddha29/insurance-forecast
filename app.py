@@ -45,7 +45,14 @@ with st.sidebar:
 @st.cache
 def load_and_filter_data(uploaded_file, selected_state):
     if uploaded_file is not None:
-        df = pd.read_csv(uploaded_file)
+         if uploaded_file.name.endswith('.zip'):
+            with zipfile.ZipFile(uploaded_file, 'r') as zip_ref:
+                # Extract the first file in the zip (assuming it contains only one CSV)
+                file_name = zip_ref.namelist()[0]
+                with zip_ref.open(file_name) as f:
+                    df = pd.read_csv(f)
+        else:
+            df = pd.read_csv(uploaded_file,encoding='ISO-8859-1')
         
         # Apply filters
         filtered_df = df[
