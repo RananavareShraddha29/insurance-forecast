@@ -8,6 +8,7 @@ from prophet.plot import plot_plotly, plot_components_plotly
 from sklearn.preprocessing import MinMaxScaler
 from statsmodels.tsa.stattools import adfuller
 from scipy.stats import zscore, skew
+import zipfile  # Add this import
 
 # Page configuration
 st.set_page_config(page_title="Insurance Premium Forecasting", layout="wide")
